@@ -1,7 +1,7 @@
-import Equation from "../game/eqn.js"
-import Joystick from "../game/joystick.js"
-import Obstacle from "../game/obstacle.js"
-import { GAME_WIDTH, GAME_HEIGHT } from "../game/utils.js"
+import Equation from "./game/eqn.js"
+import Joystick from "./game/joystick.js"
+import Obstacle from "./game/obstacle.js"
+import { GAME_WIDTH, GAME_HEIGHT } from "./game/utils.js"
 
 const canvas = document.body.appendChild(document.createElement("canvas"))
 const ctx = canvas.getContext("2d")
