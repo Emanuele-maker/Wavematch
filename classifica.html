@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Leaderboard</title>
+  <style>
+    :root {
+      --bg: #090d18;
+      --panel: rgba(16, 22, 42, 0.82);
+      --panel-border: rgba(255, 255, 255, 0.08);
+      --text: #e9eefc;
+      --muted: #97a3c4;
+      --row: rgba(255, 255, 255, 0.03);
+      --row-hover: rgba(255, 255, 255, 0.06);
+      --gold: #f6c453;
+      --silver: #cfd6e6;
+      --bronze: #d79b6a;
+      --shadow: 0 18px 60px rgba(0, 0, 0, 0.35);
+    }
+
+    * { box-sizing: border-box; }
+
+    html, body {
+      margin: 0;
+      min-height: 100%;
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      color: var(--text);
+      background:
+        radial-gradient(circle at top, rgba(102, 126, 234, 0.22), transparent 34%),
+        radial-gradient(circle at bottom right, rgba(246, 196, 83, 0.12), transparent 24%),
+        linear-gradient(180deg, #0b1020 0%, var(--bg) 100%);
+    }
+
+    .wrap {
+      width: min(1100px, calc(100vw - 32px));
+      margin: 40px auto;
+    }
+
+    .header {
+      display: flex;
+      align-items: end;
+      justify-content: space-between;
+      gap: 16px;
+      margin-bottom: 18px;
+    }
+
+    .header div {
+      width: 100%;
+      display: flex;
+      justify-content: center;
+    }
+
+    .header div h1 {
+      text-transform: uppercase;
+    }
+
+    .title {
+      margin: 0;
+      font-size: clamp(2rem, 3vw, 3rem);
+      letter-spacing: 0.02em;
+    }
+
+    .subtitle {
+      margin: 6px 0 0;
+      color: var(--muted);
+      font-size: 0.98rem;
+    }
+
+    .card {
+      background: var(--panel);
+      border: 1px solid var(--panel-border);
+      border-radius: 24px;
+      box-shadow: var(--shadow);
+      overflow: hidden;
+      backdrop-filter: blur(16px);
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      table-layout: fixed;
+    }
+
+    col.rank-col { width: 96px; }
+    col.player-col { width: auto; }
+    col.score-col { width: 180px; }
+
+    thead th {
+      text-align: left;
+      padding: 18px 22px;
+      font-size: 0.82rem;
+      text-transform: uppercase;
+      letter-spacing: 0.14em;
+      color: var(--muted);
+      background: rgba(255, 255, 255, 0.03);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    }
+
+    thead th:last-child,
+    tbody td.score {
+      text-align: right;
+    }
+
+    tbody tr {
+      background: transparent;
+      transition: transform 0.18s ease, background 0.18s ease;
+    }
+
+    tbody tr:hover {
+      background: var(--row-hover);
+      transform: translateY(-1px);
+    }
+
+    tbody td {
+      padding: 18px 22px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+      font-size: 1rem;
+      vertical-align: middle;
+    }
+
+    tbody tr:last-child td {
+      border-bottom: none;
+    }
+
+    .rank-cell {
+      font-weight: 800;
+      font-variant-numeric: tabular-nums;
+    }
+
+    .rank-badge {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 40px;
+      height: 40px;
+      border-radius: 999px;
+      border: 1px solid rgba(255, 255, 255, 0.10);
+      background: rgba(255, 255, 255, 0.05);
+      box-shadow: inset 0 1px 0 rgba(255,255,255,0.08);
+      font-variant-numeric: tabular-nums;
+    }
+
+    .player-cell {
+      font-weight: 650;
+      color: #eef2ff;
+    }
+
+    .score {
+      font-weight: 800;
+      font-variant-numeric: tabular-nums;
+      color: #f4f7ff;
+      white-space: nowrap;
+    }
+
+    .podium {
+      position: relative;
+      overflow: hidden;
+    }
+
+    .podium::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.04), transparent);
+      mix-blend-mode: screen;
+    }
+
+    .gold {
+      background: linear-gradient(90deg, rgba(246, 196, 83, 0.12), transparent 55%);
+      box-shadow: inset 0 0 0 1px rgba(246, 196, 83, 0.38);
+    }
+
+    .silver {
+      background: linear-gradient(90deg, rgba(207, 214, 230, 0.10), transparent 55%);
+      box-shadow: inset 0 0 0 1px rgba(207, 214, 230, 0.30);
+    }
+
+    .bronze {
+      background: linear-gradient(90deg, rgba(215, 155, 106, 0.10), transparent 55%);
+      box-shadow: inset 0 0 0 1px rgba(215, 155, 106, 0.28);
+    }
+
+    .gold .rank-badge {
+      background: radial-gradient(circle at top, rgba(255,255,255,0.25), rgba(246,196,83,0.20));
+      border-color: rgba(246, 196, 83, 0.65);
+      color: #241600;
+    }
+
+    .silver .rank-badge {
+      background: radial-gradient(circle at top, rgba(255,255,255,0.18), rgba(207,214,230,0.18));
+      border-color: rgba(207, 214, 230, 0.62);
+      color: #101826;
+    }
+
+    .bronze .rank-badge {
+      background: radial-gradient(circle at top, rgba(255,255,255,0.14), rgba(215,155,106,0.18));
+      border-color: rgba(215, 155, 106, 0.62);
+      color: #25150c;
+    }
+
+    .podium .player-cell.gold-name { color: #fff3c8; }
+    .podium .player-cell.silver-name { color: #edf2ff; }
+    .podium .player-cell.bronze-name { color: #ffe2cf; }
+
+    @media (max-width: 700px) {
+      .wrap { width: min(100vw - 18px, 100%); margin: 14px auto; }
+      .header { align-items: start; flex-direction: column; }
+      thead th, tbody td { padding: 14px 14px; }
+      col.rank-col { width: 78px; }
+      col.score-col { width: 140px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="header">
+      <div>
+        <h1 class="title">Classifica</h1>
+        <!-- <p class="subtitle">Top players ranked by score</p> -->
+      </div>
+    </div>
+
+    <div class="card">
+      <table aria-label="Leaderboard table">
+        <colgroup>
+          <col class="rank-col" />
+          <col class="player-col" />
+          <col class="score-col" />
+        </colgroup>
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>Nome</th>
+            <th>Punteggio</th>
+          </tr>
+        </thead>
+        <tbody id="leaderboard-body"></tbody>
+      </table>
+    </div>
+  </div>
+
+  <script>
+    fetch("https://csphotosport.com/beluga/wavematch/get-scores", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      }
+    })
+    .then(res => res.json())
+    .then(data => {
+      const leaderboardData = data.scores
+      const body = document.getElementById("leaderboard-body")
+
+      const formatScore = (score) => new Intl.NumberFormat("en-US").format(score)
+
+      body.innerHTML = leaderboardData
+        .slice()
+        .sort((a, b) => b.score - a.score)
+        .map((entry, index) => {
+          const rank = index + 1
+          const podiumClass = rank === 1 ? "gold" : rank === 2 ? "silver" : rank === 3 ? "bronze" : ""
+          const nameClass = rank === 1 ? "gold-name" : rank === 2 ? "silver-name" : rank === 3 ? "bronze-name" : ""
+
+      return `
+      <tr class="${podiumClass}">
+        <td class="rank-cell"><span class="rank-badge">${rank}</span></td>
+        <td class="player-cell ${nameClass}">${entry.player}</td>
+        <td class="score">${formatScore(entry.score)}</td>
+      </tr>
+      `
+      })
+      .join("")
+    })
+  </script>
+</body>
+</html>

@@ -42,7 +42,7 @@ const playerNameInput = document.getElementById("player-name")
 const playButton = document.getElementById("play-btn")
 const homeContainer = document.getElementById("home-container")
 let totalScore = 0
-let remainingSeconds = 10
+let remainingSeconds = 45
 
 const waveY = (eq, x) =>
   GAME_HEIGHT / 2 +
@@ -181,7 +181,7 @@ const render = () => {
   if (remainingSeconds <= 0) {
     state = "over"
     clearInterval(intervalId)
-    remainingSeconds = 90
+    remainingSeconds = 45
     eqnText.style.display = "none"
     submitScore()
   }
