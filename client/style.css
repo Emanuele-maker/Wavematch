@@ -1,0 +1,77 @@
+html, body {
+  margin: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  background-color: black;
+}
+
+#eqn {
+  position: fixed;
+  right: 2vw;
+  top: 0vh;
+  color: white;
+  font-family: "TASA Orbiter";
+  font-size: clamp(8px, 2.2vw, 40px);
+  z-index: 1000;
+  margin: 0;
+}
+
+#game-over {
+  width: 100%;
+  height: 100%;
+  display: none;
+  position: absolute;
+  justify-content: center;
+  flex-direction: column;
+  align-items: center;
+  z-index: 1001;
+  gap: 5px;
+}
+
+h1, h2 {
+  color: white;
+  font-family: "TASA Orbiter";
+  margin: 0;
+}
+
+#home-container {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  align-items: center;
+  z-index: 1001;
+  gap: 5px;
+}
+
+#home-container h1 {
+  font-size: 4vw;
+}
+
+input[type="text"] {
+  padding: 10px;
+  background-color: rgb(70, 72, 80);
+  outline: none;
+  border: none;
+  border-radius: 10px;
+  font-size: 2vw;
+  color: white;
+}
+
+button {
+  background-color: rgb(29, 108, 255);
+  padding: .75rem;
+  font-size: 2vw;
+  outline: none;
+  border: none;
+  color: white;
+  border-radius: 12px;
+}
+
+canvas {
+  display: block;
+  width: 100vw;
+  height: 100vh;
+}

@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WaveMatch</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=TASA+Orbiter:wght@400..800&display=swap" rel="stylesheet">
+    <script>
+    window.MathJax = {
+      tex: { inlineMath: [['$', '$'], ['\\(', '\\)']] }
+    }
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+</head>
+<body>
+    <p id="eqn" style="display: none;"></p>
+    <div id="home-container">
+        <h1 class="heading">WaveMatch</h1>
+        <input type="text" placeholder="Inserisci qui il tuo nome..." id="player-name">
+        <button id="play-btn">Gioca!</button>
+    </div>
+    <div id="game-over">
+        <h1>Tempo Scaduto!</h1>
+        <h2 id="score-text">Punteggio: </h2>
+        <button id="restart-btn">Ricomincia</button>
+    </div>
+    <script src="main.js" type="module"></script>
+</body>
+</html>
